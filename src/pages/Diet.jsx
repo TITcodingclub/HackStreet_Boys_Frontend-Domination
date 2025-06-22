@@ -1,388 +1,316 @@
 import React, { useState } from 'react';
-import { Apple, Clock, ChefHat, Target, Plus, Trash2, Heart, Zap } from 'lucide-react';
-import { useTheme } from '../contexts/ThemeContext';
+import { Check, User, Calendar, Apple, Clock, Utensils, ChevronDown, ChevronRight } from 'lucide-react';
 
-const Diet = () => {
-  const { isDarkMode } = useTheme();
-  const [selectedMealPlan, setSelectedMealPlan] = useState(null);
-  const [customMeals, setCustomMeals] = useState([]);
-  const [showAddForm, setShowAddForm] = useState(false);
-  const [newMeal, setNewMeal] = useState({ name: '', calories: '', protein: '', carbs: '', fats: '' });
+const DietPlanDashboard = () => {
+  const [expandedDay, setExpandedDay] = useState(null);
 
-  const mealPlans = [
+  const toggleDay = (dayIndex) => {
+    setExpandedDay(expandedDay === dayIndex ? null : dayIndex);
+  };
+  const dietPlans = [
     {
-      id: 1,
-      name: 'Weight Loss',
-      calories: '1500-1800',
-      description: 'Balanced nutrition for sustainable weight loss',
-      color: 'from-green-500 to-emerald-400',
-      icon: Target,
-      meals: [
-        { name: 'Breakfast', food: 'Greek yogurt with berries', calories: 300, time: '7:00 AM' },
-        { name: 'Lunch', food: 'Grilled chicken salad', calories: 450, time: '12:00 PM' },
-        { name: 'Dinner', food: 'Baked salmon with vegetables', calories: 400, time: '7:00 PM' },
-        { name: 'Snacks', food: 'Apple with almonds', calories: 200, time: '3:00 PM' }
-      ]
+      day: "Monday",
+      meals: {
+        breakfast: {
+          items: ["1 cup 2% greek yogurt", "1/4 cup low-sugar granola", "1/2 cup blueberries"],
+          macros: "337 calories, 25g protein, 35g carbs, 11g fat"
+        },
+        snacks: {
+          items: ["1-ounce cheddar cheese", "10 whole grain crackers", "1 cup red seedless grapes"],
+          macros: "423 calories, 10g protein, 52g carbs, 20g fat"
+        },
+        lunch: {
+          items: ["3 ounces of tuna mixed with 1 tbsp mayonnaise on 8-inch whole wheat wrap", "1 red bell pepper, sliced"],
+          macros: "478 calories, 24g protein, 73g carbs, 13g fat"
+        },
+        dinner: {
+          items: ["5 ounces chicken breast coated in 1 tbsp pesto, baked", "1 cup whole wheat pasta mixed with 1 tbsp pesto", "6 asparagus spears mixed with 1 tbsp olive oil, grilled"],
+          macros: "497 calories, 31g protein, 39g carbs, 24g fat"
+        }
+      }
     },
     {
-      id: 2,
-      name: 'Muscle Building',
-      calories: '2500-3000',
-      description: 'High protein intake for muscle growth',
-      color: 'from-blue-500 to-cyan-400',
-      icon: Zap,
-      meals: [
-        { name: 'Breakfast', food: 'Protein smoothie with oats', calories: 500, time: '7:00 AM' },
-        { name: 'Lunch', food: 'Lean beef with quinoa', calories: 600, time: '12:00 PM' },
-        { name: 'Dinner', food: 'Chicken breast with sweet potato', calories: 550, time: '7:00 PM' },
-        { name: 'Snacks', food: 'Protein bars and nuts', calories: 400, time: 'Multiple' }
-      ]
+      day: "Tuesday",
+      meals: {
+        breakfast: {
+          items: ["One slice 100% whole wheat bread", "1/2 avocado", "2 fried eggs"],
+          macros: "505 calories, 18g protein, 49g carbs, 28g fat"
+        },
+        snacks: {
+          items: ["15 cherries", "1/4 cup almonds"],
+          macros: "284 calories, 9g protein, 27g carbs, 18g fat"
+        },
+        lunch: {
+          items: ["Black bean and corn quesadilla with 1/2 cup black beans, 1/3 cup corn kernels, and 1/4 cup shredded cheddar cheese on 8-inch whole wheat tortilla", "1/4 cup salsa and 1/4 cup guacamole"],
+          macros: "513 calories, 22g protein, 60g carbs, 23g fat"
+        },
+        dinner: {
+          items: ["Turkey burger on 100% whole wheat bun with lettuce, tomato, and 2 tsp ketchup", "1 zucchini sliced into spears, roasted with 1 tbsp olive oil", "1/2 regular potato, sliced into french fries and baked with 1 tbsp olive oil"],
+          macros: "525 calories, 39g protein, 40g carbs, 23g fat"
+        }
+      }
     },
     {
-      id: 3,
-      name: 'Maintenance',
-      calories: '2000-2200',
-      description: 'Balanced nutrition for maintaining current weight',
-      color: 'from-purple-500 to-pink-400',
-      icon: Heart,
-      meals: [
-        { name: 'Breakfast', food: 'Whole grain toast with avocado', calories: 350, time: '7:00 AM' },
-        { name: 'Lunch', food: 'Turkey wrap with vegetables', calories: 500, time: '12:00 PM' },
-        { name: 'Dinner', food: 'Grilled fish with brown rice', calories: 450, time: '7:00 PM' },
-        { name: 'Snacks', food: 'Mixed nuts and fruit', calories: 250, time: '3:00 PM' }
-      ]
+      day: "Wednesday",
+      meals: {
+        breakfast: {
+          items: ["1 cup oatmeal cooked in water", "2 tbsp peanut butter", "1/2 cup blueberries"],
+          macros: "452 calories, 17g protein, 47g carbs, 25g fat"
+        },
+        snacks: {
+          items: ["4 slices of dried mango", "Protein shake: 1 scoop vanilla whey protein powder mixed with 1 cup unsweetened vanilla almond milk"],
+          macros: "452 calories, 17g protein, 47g carbs, 25g fat"
+        },
+        lunch: {
+          items: ["Tuna melt with 4 ounces of canned tuna mixed with 1/4 avocado, 1 slice of cheese, and slice of tomato on two slices of 100% whole wheat bread"],
+          macros: "507 calories, 43g protein, 34g carbs, 22g fat"
+        },
+        dinner: {
+          items: ["3 ounces shredded chicken, 1 ounce shredded cheddar cheese quesadilla in 8-inch whole wheat tortilla"],
+          macros: "450 calories, 32g protein, 25g carbs, 25g fat"
+        }
+      }
+    },
+    {
+      day: "Thursday",
+      meals: {
+        breakfast: {
+          items: ["One slice 100% whole wheat bread", "1/4 cup low-sugar granola", "1/2 cup blueberries"],
+          macros: "337 calories, 25g protein, 35g carbs, 11g fat"
+        },
+        snacks: {
+          items: ["1 cup 2% Greek yogurt", "1/2 cup raspberries", "3/4 cup high-fiber cereal"],
+          macros: "271 calories, 24g protein, 53g carbs, 5g fat"
+        },
+        lunch: {
+          items: ["Salad with 1/2 cup chickpeas, 1/4 cup olives, 1/4 cup feta cheese, tomatoes, cucumbers, and 2 tbsp balsamic vinaigrette dressing", "One 6-inch 100% whole wheat pita bread"],
+          macros: "554 calories, 21g protein, 73g carbs, 21g fat"
+        },
+        dinner: {
+          items: ["4 ounces grilled salmon", "1 medium baked sweet potato"],
+          macros: "483 calories, 29g protein, 29g carbs, 28g fat"
+        }
+      }
+    },
+    {
+      day: "Friday",
+      meals: {
+        breakfast: {
+          items: ["One small apple", "1 tbsp peanut butter", "One 7-ounce container 2% Greek yogurt"],
+          macros: "318 calories, 24g protein, 32g carbs, 12g fat"
+        },
+        snacks: {
+          items: ["Two slices of 100% whole wheat toast", "1/2 avocado", "2 poached eggs"],
+          macros: "465 calories, 23g protein, 37g carbs, 26g fat"
+        },
+        lunch: {
+          items: ["1 1/2 cups lentil pasta with 1/2 cup tomato sauce, 1/2 zucchini chopped and sauteed in 1 tbsp olive oil, and 2 tbsp parmesan cheese", "4 ounces baked chicken breast"],
+          macros: "573 calories, 50g protein, 42g carbs, 24g fat"
+        },
+        dinner: {
+          items: ["4 ounces baked chicken breast with vegetables"],
+          macros: "400 calories, 35g protein, 25g carbs, 18g fat"
+        }
+      }
+    },
+    {
+      day: "Saturday",
+      meals: {
+        breakfast: {
+          items: ["1 cup 2% Greek yogurt", "1/4 cup granola", "1/2 cup blueberries"],
+          macros: "337 calories, 25g protein, 35g carbs, 11g fat"
+        },
+        snacks: {
+          items: ["100% whole wheat 6-inch pita bread", "1/4 cup hummus"],
+          macros: "265 calories, 10g protein, 42g carbs, 6g fat"
+        },
+        lunch: {
+          items: ["1 tbsp whole grain mustard, slice of tomato, and lettuce leaf", "1 ounce slice cheddar cheese"],
+          macros: "350 calories, 18g protein, 19g carbs, 24g fat"
+        },
+        dinner: {
+          items: ["1 cup rice noodle", "1/2 cup snow peas", "2 tbsp peanut sauce"],
+          macros: "410 calories, 19g protein, 57g carbs, 12g fat"
+        }
+      }
     }
   ];
 
-  const handleAddMeal = (e) => {
-    e.preventDefault();
-    if (newMeal.name && newMeal.calories) {
-      setCustomMeals([...customMeals, { ...newMeal, id: Date.now() }]);
-      setNewMeal({ name: '', calories: '', protein: '', carbs: '', fats: '' });
-      setShowAddForm(false);
+  const benefits = [
+    {
+      title: "Providing Essential Nutrients",
+      description: "Proteins for muscle repair, carbohydrates for energy, healthy fats for hormone production, and vital micronutrients for muscle function.",
+      icon: <Apple className="w-6 h-6" />
+    },
+    {
+      title: "Energy Supply",
+      description: "Building muscle requires significant energy for workouts and recovery. A balanced diet ensures sustained energy levels.",
+      icon: <Clock className="w-6 h-6" />
+    },
+    {
+      title: "Optimizing Recovery",
+      description: "Post-workout nutrition with protein and carbs helps replenish glycogen stores and provides amino acids for muscle repair.",
+      icon: <User className="w-6 h-6" />
+    },
+    {
+      title: "Positive Nitrogen Balance",
+      description: "Adequate protein intake ensures sufficient nitrogen for muscle protein synthesis and growth.",
+      icon: <Calendar className="w-6 h-6" />
+    },
+    {
+      title: "Hormonal Support",
+      description: "Diet influences hormone levels important for muscle growth, including insulin, testosterone, and growth hormone.",
+      icon: <Utensils className="w-6 h-6" />
     }
-  };
+  ];
 
-  const removeMeal = (id) => {
-    setCustomMeals(customMeals.filter(meal => meal.id !== id));
+  const MealCard = ({ meal, type, icon }) => (
+    <div className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 border border-gray-100 group">
+      <div className="flex items-center gap-3 mb-4">
+        <div className="p-2 bg-gradient-to-r from-blue-100 to-purple-100 rounded-lg group-hover:scale-110 transition-transform duration-300">
+          {icon}
+        </div>
+        <h4 className="text-xl font-bold text-gray-800 capitalize group-hover:text-blue-600 transition-colors duration-300">{type}</h4>
+      </div>
+      <ul className="space-y-2 mb-4">
+        {meal.items.map((item, index) => (
+          <li key={index} className="text-gray-700 text-sm leading-relaxed flex items-start gap-2 group-hover:text-gray-800 transition-colors duration-300">
+            <span className="text-blue-500 mt-1 group-hover:text-blue-600 transition-colors duration-300">•</span>
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-3 group-hover:from-blue-100 group-hover:to-purple-100 transition-all duration-300">
+        <p className="text-sm font-semibold text-gray-800">{meal.macros}</p>
+      </div>
+    </div>
+  );
+
+  const mealIcons = {
+    breakfast: <Apple className="w-5 h-5 text-orange-500" />,
+    snacks: <Clock className="w-5 h-5 text-green-500" />,
+    lunch: <Utensils className="w-5 h-5 text-blue-500" />,
+    dinner: <User className="w-5 h-5 text-purple-500" />
   };
 
   return (
-    <div className="min-h-screen py-8">
-      <div className="container mx-auto px-6">
-        {/* Header */}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      {/* Header */}
+      <div className="bg-white shadow-lg border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+               Diet Plan for Muscle Building
+            </h1>
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <span className="text-xl font-semibold text-gray-700">By</span>
+              <span className="text-xl font-bold text-blue-600">Flex.Fitness</span>
+            </div>
+            {/* <div className="flex items-center justify-center gap-2 text-gray-600">
+              <span className="font-medium">Medically Reviewed by</span>
+              <span className="font-bold text-blue-600">DR. Prasant</span>
+              <Check className="w-5 h-5 text-green-500" />
+            </div> */}
+          </div>
+        </div>
+      </div>
+
+      {/* Why Diet is Critical Section */}
+      <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="text-center mb-12">
-          <h1 className={`text-4xl sm:text-5xl font-bold mb-4 ${
-            isDarkMode 
-              ? 'bg-gradient-to-r from-blue-500 to-cyan-400 bg-clip-text text-transparent'
-              : 'bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent'
-          }`}>
-            Nutrition & Diet Plans
-          </h1>
-          <p className={`text-lg sm:text-xl max-w-2xl mx-auto ${
-            isDarkMode ? 'text-gray-400' : 'text-gray-600'
-          }`}>
-            Fuel your body with scientifically designed meal plans for optimal results
-          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+            Why Diet is Critical for Muscle Building?
+          </h2>
         </div>
 
-        {/* Meal Plans */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {mealPlans.map((plan) => (
-            <div key={plan.id} className={`group relative overflow-hidden rounded-2xl border transition-all duration-300 transform hover:scale-105 cursor-pointer ${
-              isDarkMode 
-                ? 'bg-gradient-to-br from-gray-900 to-black border-gray-800 hover:border-blue-500'
-                : 'bg-gradient-to-br from-white to-gray-50 border-gray-200 hover:border-blue-500 shadow-lg'
-            } ${selectedMealPlan?.id === plan.id ? 'ring-2 ring-blue-500' : ''}`}
-            onClick={() => setSelectedMealPlan(plan)}>
-              {/* Plan Header */}
-              <div className={`p-6 bg-gradient-to-r ${plan.color} text-white`}>
-                <div className="flex items-center justify-between mb-4">
-                  <plan.icon className="h-8 w-8" />
-                  <div className="text-right">
-                    <div className="text-2xl font-bold">{plan.calories}</div>
-                    <div className="text-sm opacity-90">calories/day</div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+          {benefits.map((benefit, index) => (
+            <div key={index} className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 border border-gray-100 group">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2 bg-blue-100 rounded-lg group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-purple-500 group-hover:scale-110 transition-all duration-300">
+                  <div className="group-hover:text-white transition-colors duration-300">
+                    {benefit.icon}
                   </div>
                 </div>
-                <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
-                <p className="text-sm opacity-90">{plan.description}</p>
+                <h3 className="text-lg font-bold text-gray-800 group-hover:text-blue-600 transition-colors duration-300">{benefit.title}</h3>
               </div>
+              <p className="text-gray-600 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">{benefit.description}</p>
+            </div>
+          ))}
+        </div>
 
-              {/* Plan Details */}
-              <div className="p-6">
-                <div className="space-y-3">
-                  {plan.meals.map((meal, index) => (
-                    <div key={index} className="flex items-center justify-between">
-                      <div>
-                        <div className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                          {meal.name}
-                        </div>
-                        <div className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                          {meal.food}
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                          {meal.calories} cal
-                        </div>
-                        <div className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                          {meal.time}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+        {/* Diet Plan */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+            Sample 6-Day Meal Plan for Muscle Gain
+          </h2>
+        </div>
+
+        <div className="space-y-4">
+          {dietPlans.map((plan, planIndex) => (
+            <div key={planIndex} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden">
+              {/* Day Header - Clickable */}
+              <div 
+                className="flex items-center justify-between p-6 cursor-pointer hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all duration-300 group"
+                onClick={() => toggleDay(planIndex)}
+              >
+                <div className="flex items-center gap-4">
+                  <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                    <Calendar className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 group-hover:text-blue-600 transition-colors duration-300">
+                    {plan.day}
+                  </h3>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-gray-500 group-hover:text-gray-700 transition-colors duration-300">
+                    {expandedDay === planIndex ? 'Hide meals' : 'View meals'}
+                  </span>
+                  <div className="p-2 rounded-full bg-gray-100 group-hover:bg-blue-100 transition-all duration-300">
+                    {expandedDay === planIndex ? (
+                      <ChevronDown className="w-5 h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-300" />
+                    ) : (
+                      <ChevronRight className="w-5 h-5 text-gray-600 group-hover:text-blue-600 transition-colors duration-300" />
+                    )}
+                  </div>
                 </div>
               </div>
 
-              {/* Select Button */}
-              <div className="p-6 pt-0">
-                <button className={`w-full py-2 px-4 rounded-lg font-semibold transition-all duration-300 ${
-                  selectedMealPlan?.id === plan.id
-                    ? 'bg-gradient-to-r from-blue-500 to-cyan-400 text-white'
-                    : isDarkMode 
-                      ? 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}>
-                  {selectedMealPlan?.id === plan.id ? 'Selected' : 'Select Plan'}
-                </button>
+              {/* Expandable Content */}
+              <div className={`transition-all duration-500 ease-in-out ${
+                expandedDay === planIndex 
+                  ? 'max-h-[2000px] opacity-100' 
+                  : 'max-h-0 opacity-0 overflow-hidden'
+              }`}>
+                <div className="px-6 pb-6">
+                  <div className="border-t border-gray-200 pt-6">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      {Object.entries(plan.meals).map(([mealType, meal]) => (
+                        <MealCard
+                          key={mealType}
+                          meal={meal}
+                          type={mealType}
+                          icon={mealIcons[mealType]}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Selected Plan Details */}
-        {selectedMealPlan && (
-          <div className={`p-6 sm:p-8 rounded-2xl border mb-12 ${
-            isDarkMode 
-              ? 'bg-gradient-to-br from-gray-900 to-black border-gray-800'
-              : 'bg-gradient-to-br from-white to-gray-50 border-gray-200 shadow-lg'
-          }`}>
-            <h2 className={`text-2xl sm:text-3xl font-bold mb-6 ${
-              isDarkMode ? 'text-white' : 'text-gray-900'
-            }`}>
-              Your Selected Plan: {selectedMealPlan.name}
-            </h2>
-            
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {selectedMealPlan.meals.map((meal, index) => (
-                <div key={index} className={`p-4 rounded-xl border ${
-                  isDarkMode 
-                    ? 'bg-gray-800 border-gray-700'
-                    : 'bg-white border-gray-200 shadow-sm'
-                }`}>
-                  <div className="flex items-center space-x-2 mb-3">
-                    <ChefHat className="h-5 w-5 text-blue-500" />
-                    <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                      {meal.name}
-                    </h3>
-                  </div>
-                  <p className={`text-sm mb-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                    {meal.food}
-                  </p>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                      {meal.calories} cal
-                    </span>
-                    <div className="flex items-center space-x-1">
-                      <Clock className="h-4 w-4 text-gray-500" />
-                      <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>
-                        {meal.time}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="text-center">
-              <button className="px-8 py-3 bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 text-white font-semibold rounded-lg transition-all duration-300 transform hover:scale-105">
-                Start This Plan
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Custom Meal Tracker */}
-        <div className={`p-6 sm:p-8 rounded-2xl border ${
-          isDarkMode 
-            ? 'bg-gradient-to-br from-gray-900 to-black border-gray-800'
-            : 'bg-gradient-to-br from-white to-gray-50 border-gray-200 shadow-lg'
-        }`}>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
-            <h2 className={`text-2xl font-bold mb-4 sm:mb-0 ${
-              isDarkMode ? 'text-white' : 'text-gray-900'
-            }`}>
-              Custom Meal Tracker
-            </h2>
-            <button
-              onClick={() => setShowAddForm(true)}
-              className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
-            >
-              <Plus className="h-4 w-4" />
-              <span>Add Meal</span>
-            </button>
-          </div>
-
-          {/* Add Meal Form */}
-          {showAddForm && (
-            <div className={`mb-6 p-4 sm:p-6 rounded-xl border ${
-              isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-300'
-            }`}>
-              <h3 className={`text-lg font-semibold mb-4 ${
-                isDarkMode ? 'text-white' : 'text-gray-900'
-              }`}>
-                Add Custom Meal
-              </h3>
-              <form onSubmit={handleAddMeal} className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    placeholder="Meal name"
-                    value={newMeal.name}
-                    onChange={(e) => setNewMeal({ ...newMeal, name: e.target.value })}
-                    className={`px-4 py-2 rounded-lg border transition-colors ${
-                      isDarkMode 
-                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500'
-                        : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500'
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500/20`}
-                    required
-                  />
-                  <input
-                    type="number"
-                    placeholder="Calories"
-                    value={newMeal.calories}
-                    onChange={(e) => setNewMeal({ ...newMeal, calories: e.target.value })}
-                    className={`px-4 py-2 rounded-lg border transition-colors ${
-                      isDarkMode 
-                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500'
-                        : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500'
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500/20`}
-                    required
-                  />
-                </div>
-                <div className="grid sm:grid-cols-3 gap-4">
-                  <input
-                    type="number"
-                    placeholder="Protein (g)"
-                    value={newMeal.protein}
-                    onChange={(e) => setNewMeal({ ...newMeal, protein: e.target.value })}
-                    className={`px-4 py-2 rounded-lg border transition-colors ${
-                      isDarkMode 
-                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500'
-                        : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500'
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500/20`}
-                  />
-                  <input
-                    type="number"
-                    placeholder="Carbs (g)"
-                    value={newMeal.carbs}
-                    onChange={(e) => setNewMeal({ ...newMeal, carbs: e.target.value })}
-                    className={`px-4 py-2 rounded-lg border transition-colors ${
-                      isDarkMode 
-                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500'
-                        : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500'
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500/20`}
-                  />
-                  <input
-                    type="number"
-                    placeholder="Fats (g)"
-                    value={newMeal.fats}
-                    onChange={(e) => setNewMeal({ ...newMeal, fats: e.target.value })}
-                    className={`px-4 py-2 rounded-lg border transition-colors ${
-                      isDarkMode 
-                        ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500'
-                        : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500 focus:border-blue-500'
-                    } focus:outline-none focus:ring-2 focus:ring-blue-500/20`}
-                  />
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    type="submit"
-                    className="px-6 py-2 bg-gradient-to-r from-blue-500 to-cyan-400 hover:from-blue-600 hover:to-cyan-500 rounded-lg font-semibold transition-all duration-300"
-                  >
-                    Add Meal
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowAddForm(false)}
-                    className={`px-6 py-2 rounded-lg font-semibold transition-colors ${
-                      isDarkMode 
-                        ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                        : 'bg-gray-200 text-gray-600 hover:bg-gray-300'
-                    }`}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
-
-          {/* Custom Meals List */}
-          {customMeals.length > 0 ? (
-            <div className="space-y-4">
-              {customMeals.map((meal) => (
-                <div key={meal.id} className={`p-4 rounded-xl border transition-all duration-300 hover:scale-[1.02] ${
-                  isDarkMode 
-                    ? 'bg-gray-800 border-gray-700 hover:border-blue-500'
-                    : 'bg-white border-gray-200 hover:border-blue-500 shadow-sm'
-                }`}>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className={`font-semibold mb-1 ${
-                        isDarkMode ? 'text-white' : 'text-gray-900'
-                      }`}>
-                        {meal.name}
-                      </h3>
-                      <div className="flex flex-wrap gap-4 text-sm">
-                        <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>
-                          {meal.calories} cal
-                        </span>
-                        {meal.protein && (
-                          <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>
-                            {meal.protein}g protein
-                          </span>
-                        )}
-                        {meal.carbs && (
-                          <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>
-                            {meal.carbs}g carbs
-                          </span>
-                        )}
-                        {meal.fats && (
-                          <span className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>
-                            {meal.fats}g fats
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <button
-                      onClick={() => removeMeal(meal.id)}
-                      className={`p-2 rounded-lg transition-colors ${
-                        isDarkMode 
-                          ? 'text-red-400 hover:bg-red-500/20'
-                          : 'text-red-500 hover:bg-red-50'
-                      }`}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-8">
-              <Apple className={`h-16 w-16 mx-auto mb-4 ${
-                isDarkMode ? 'text-gray-600' : 'text-gray-400'
-              }`} />
-              <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                No custom meals added yet. Click "Add Meal" to start tracking!
-              </p>
-            </div>
-          )}
+        {/* Footer */}
+        <div className="text-center mt-16 p-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl text-white shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300">
+          <h3 className="text-2xl font-bold mb-4">Ready to Transform Your Body?</h3>
+          <p className="text-lg opacity-90">
+            Follow this comprehensive 6-day meal plan and watch your muscle-building goals become reality!
+          </p>
         </div>
       </div>
     </div>
   );
-};
+};        
 
-export default Diet;
+export default DietPlanDashboard;
